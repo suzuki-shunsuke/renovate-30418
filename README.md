@@ -11,7 +11,8 @@ This repository reproduces the issue that `renovate-config-validator --strict` o
 Please push a commit to the main branch or create a pull request.
 Then GitHub Actions Workflow is run and the issue would be reproduced.
 
-[workflow](.github/workflows/test.yaml)
+- https://github.com/suzuki-shunsuke/renovate-30418/actions/workflows/test.yaml
+- [workflow](.github/workflows/test.yaml)
 
 There are three jobs.
 
@@ -26,3 +27,42 @@ These jobs should fail as these configuration files should be migrated.
 ### Actual behaviour
 
 `json` and `json-env` failed expectedly but `js` passed unexpectedly.
+
+https://github.com/suzuki-shunsuke/renovate-30418/actions/runs/12041031694
+
+```
+Run node -v
+v20.18.1
+
+Run npm -v
+10.8.2
+
+Run renovate --version
+39.31.3
+```
+
+json and json-env:
+
+```
+Run renovate-config-validator --strict
+ INFO: Validating renovate.json
+ WARN: Config migration necessary
+       "oldConfig": {"extends": ["config:base"]},
+       "newConfig": {"extends": ["config:recommended"]}
+ WARN: config.js needs migrating
+       "originalConfig": {"packageRules": [{"packagePatterns": ["foo"], "groupName": "foo"}]},
+       "migratedConfig": {"packageRules": [{"groupName": "foo", "matchPackageNames": ["/foo/"]}]}
+ INFO: Validating config.js
+Error: Process completed with exit code 1.
+```
+
+js:
+
+```
+Run RENOVATE_CONFIG_FILE=config.js renovate-config-validator --strict
+ WARN: config.js needs migrating
+       "originalConfig": {"packageRules": [{"packagePatterns": ["foo"], "groupName": "foo"}]},
+       "migratedConfig": {"packageRules": [{"groupName": "foo", "matchPackageNames": ["/foo/"]}]}
+ INFO: Validating config.js
+ INFO: Config validated successfully
+```
