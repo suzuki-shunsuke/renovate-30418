@@ -16,13 +16,15 @@ Then GitHub Actions Workflow is run and the issue would be reproduced.
 
 There are three jobs.
 
-- js: Validate `config.js`
-- renovate-json: Validate `renovate.json`
-- foo-json: Validate `foo.json`
+- js: `RENOVATE_CONFIG_FILE=config.js renovate-config-validator --strict`
+- js-arg: `renovate-config-validator --strict config.js`
+- renovate-json: `renovate-config-validator --strict` (Validate renovate.json)
+- foo-json: `RENOVATE_CONFIG_FILE=foo.json renovate-config-validator --strict`
+- foo-json-arg: `renovate-config-validator --strict foo.json`
 
 ### Expected behaviour
 
-These jobs should fail as these configuration files should be migrated.
+All jobs should fail as these configuration files should be migrated.
 
 ### Actual behaviour
 

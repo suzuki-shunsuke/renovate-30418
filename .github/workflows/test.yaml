@@ -25,6 +25,16 @@ jobs:
       - run: renovate --version
       - run: rm renovate.json # Remove renovate.json to exclude the target of validation
       - run: RENOVATE_CONFIG_FILE=foo.json renovate-config-validator --strict
+  foo-json-arg:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - run: node -v
+      - run: npm -v
+      - run: npm i -g renovate
+      - run: renovate --version
+      - run: rm renovate.json # Remove renovate.json to exclude the target of validation
+      - run: renovate-config-validator --strict foo.json
   js:
     runs-on: ubuntu-24.04
     steps:
