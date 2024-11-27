@@ -14,7 +14,7 @@ Then GitHub Actions Workflow is run and the issue would be reproduced.
 - https://github.com/suzuki-shunsuke/renovate-30418/actions/workflows/test.yaml
 - [workflow](.github/workflows/test.yaml)
 
-There are three jobs.
+There are five jobs.
 
 - js: `RENOVATE_CONFIG_FILE=config.js renovate-config-validator --strict`
 - js-arg: `renovate-config-validator --strict config.js`
@@ -28,7 +28,17 @@ All jobs should fail as these configuration files should be migrated.
 
 ### Actual behaviour
 
-`renovate-json` failed expectedly but `foo-json` and `js` passed unexpectedly.
+https://github.com/suzuki-shunsuke/renovate-30418/actions/runs/12041333480
+
+Seems like this issue occurs when a configuration file is passed via `RENOVATE_CONFIG_FILE`.
+The file format (.js or .json) isn't related.
+And this issue doesn't occur when a configuration file is passed via a positional argument.
+
+- js: :o:
+- js-arg: :x:
+- renovate-json: :x:
+- foo-json: :o:
+- foo-json-arg: :x:
 
 ```
 Run node -v
@@ -65,4 +75,26 @@ Run RENOVATE_CONFIG_FILE=config.js renovate-config-validator --strict
        "migratedConfig": {"packageRules": [{"groupName": "foo", "matchPackageNames": ["/foo/"]}]}
  INFO: Validating config.js
  INFO: Config validated successfully
+```
+
+foo-json:
+
+```
+Run RENOVATE_CONFIG_FILE=foo.json renovate-config-validator --strict
+ WARN: foo.json needs migrating
+       "originalConfig": {"extends": ["config:base"]},
+       "migratedConfig": {"extends": ["config:recommended"]}
+ INFO: Validating foo.json
+ INFO: Config validated successfully
+```
+
+foo-json-arg:
+
+```
+Run renovate-config-validator --strict foo.json
+ INFO: Validating foo.json
+ WARN: Config migration necessary
+       "oldConfig": {"extends": ["config:base"]},
+       "newConfig": {"extends": ["config:recommended"]}
+Error: Process completed with exit code 1.
 ```
