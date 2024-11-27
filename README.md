@@ -2,7 +2,7 @@
 
 Reproduce the issue of Renovate. https://github.com/renovatebot/renovate/issues/30418
 
-Renovate configuration files [renovate.json](renovate.json) and [config.js](config.js) should be migrated, meaning `renovate-config-validator --strict` should fail.
+Renovate configuration files [renovate.json](renovate.json), [foo.json](foo.json), and [config.js](config.js) should be migrated, meaning `renovate-config-validator --strict` should fail.
 
 This repository reproduces the issue that `renovate-config-validator --strict` on config.js passes unexpectedly, while renovate-config-validator on renovate.json fails expectedly.
 
@@ -17,8 +17,8 @@ Then GitHub Actions Workflow is run and the issue would be reproduced.
 There are three jobs.
 
 - js: Validate `config.js`
-- json: Validate `renovate.json`
-- json-env: Pass `renovate.json` via the environment variable `RENOVATE_CONFIG_FILE` and validate `renovate.json`
+- renovate-json: Validate `renovate.json`
+- foo-json: Validate `foo.json`
 
 ### Expected behaviour
 
@@ -26,9 +26,7 @@ These jobs should fail as these configuration files should be migrated.
 
 ### Actual behaviour
 
-`json` and `json-env` failed expectedly but `js` passed unexpectedly.
-
-https://github.com/suzuki-shunsuke/renovate-30418/actions/runs/12041031694
+`renovate-json` failed expectedly but `foo-json` and `js` passed unexpectedly.
 
 ```
 Run node -v
@@ -41,7 +39,7 @@ Run renovate --version
 39.31.3
 ```
 
-json and json-env:
+renovate-json:
 
 ```
 Run renovate-config-validator --strict
