@@ -23,7 +23,8 @@ jobs:
       - run: npm -v
       - run: npm i -g renovate
       - run: renovate --version
-      - run: RENOVATE_CONFIG_FILE=renovate.json renovate-config-validator --strict
+      - run: mv renovate.json foo.json # Rename renovate.json as renovate.json is the default target of validation
+      - run: RENOVATE_CONFIG_FILE=foo.json renovate-config-validator --strict
   js:
     runs-on: ubuntu-24.04
     steps:
@@ -32,5 +33,5 @@ jobs:
       - run: npm -v
       - run: npm i -g renovate
       - run: renovate --version
-      - run: rm renovate.json
+      - run: rm renovate.json # Remove renovate.json to exclude the target of validation
       - run: RENOVATE_CONFIG_FILE=config.js renovate-config-validator --strict
