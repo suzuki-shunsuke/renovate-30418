@@ -4,7 +4,7 @@ Reproduce the issue of Renovate. https://github.com/renovatebot/renovate/issues/
 
 Renovate configuration files [renovate.json](renovate.json), [foo.json](foo.json), and [config.js](config.js) should be migrated, meaning `renovate-config-validator --strict` should fail.
 
-This repository reproduces the issue that `renovate-config-validator --strict` on config.js passes unexpectedly, while renovate-config-validator on renovate.json fails expectedly.
+This repository reproduces the issue that `renovate-config-validator --strict` fails if a configuration file is passed via `RENOVATE_CONFIG_FILE`, while it succeeds if a configuration file is passed via a positional argument or default configuration file paths.
 
 ## How To Reproduce
 
